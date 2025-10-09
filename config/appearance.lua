@@ -40,7 +40,7 @@ return function(wezterm, config)
     -- background img
     config.window_background_image = "C:/Users/lixinrong/.config/wezterm/share/momiji1.png"
     config.window_background_image_hsb = {
-        brightness = 0.12, -- 亮度
+        brightness = 0.09, -- 亮度
         hue = 1.0, -- 色相
         saturation = 1.9, -- 饱和度
     }
