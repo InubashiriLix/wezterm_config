@@ -1,47 +1,76 @@
-return function(wezterm, config)
-    -- 尺寸 & 外观
-    config.initial_cols = 120
-    config.initial_rows = 28
-    config.window_decorations = "RESIZE"
-    config.use_fancy_tab_bar = false
-    config.tab_max_width = 80
-    config.hide_tab_bar_if_only_one_tab = false
-    -- config.color_scheme = "Catppuccin Mocha"
+-- 外观相关配置：GPU 适配器、背景与配色方案
+local gpu_adapters = require('utils.gpu-adapter')
+local backdrops = require('utils.backdrops')
+local colors = require('colors.custom')
 
-    -- ✅ 极简字体：主 + 单一中文 + Emoji（减少字体回退分段渲染的开销）
-    -- config.font = wezterm.font_with_fallback({
-    --     "JetBrains Mono", -- 主字体（确认你机器上有这个名字）
-    --     -- { family = "Sarasa Mono SC", scale = 1.05 }, -- 中文；没有就换 "Microsoft YaHei" / "Noto Sans CJK SC"
-    --     -- "Segoe UI Emoji", -- Windows Emoji
-    -- })
-    config.font = wezterm.font("JetBrains Mono")
-    config.use_cap_height_to_scale_fallback_fonts = true -- 让回退字体高度对齐，减少抖动
-    config.font_size = 14
+return {
+   max_fps = 120,
+   front_end = 'WebGpu', ---@type 'WebGpu' | 'OpenGL' | 'Software'
+   webgpu_power_preference = 'HighPerformance',
+   webgpu_preferred_adapter = gpu_adapters:pick_best(),
+   -- webgpu_preferred_adapter = gpu_adapters:pick_manual('Dx12', 'IntegratedGpu'),
+   -- webgpu_preferred_adapter = gpu_adapters:pick_manual('Gl', 'Other'),
+   underline_thickness = '1.5pt',
 
-    -- 提升动画帧率，让 cursor smear 更丝滑（不想动显卡可降到 90/60）
-    config.animation_fps = 120
-    config.max_fps = 120
+   -- 光标动画相关参数
+   animation_fps = 120,
+   cursor_blink_ease_in = 'EaseOut',
+   cursor_blink_ease_out = 'EaseOut',
+   default_cursor_style = 'BlinkingBlock',
+   cursor_blink_rate = 650,
 
-    -- 如果仍感觉不顺，把光标改为稳定块并关闭闪烁（按需打开）：
-    -- config.default_cursor_style = "SteadyBlock"
-    -- config.cursor_blink_rate = 0
+   -- 颜色主题配置
+   colors = colors,
 
-    -- Shell
-    config.default_prog = { "C:\\Program Files\\PowerShell\\7\\pwsh.exe" }
+   -- 背景图：传入 true 可在启动时启用专注模式（关闭背景图）
+   background = backdrops:initial_options(false), -- 默认叠加半透明黑色遮罩
 
-    -- 边距 & 透明度
-    config.window_padding = { top = 0 }
-    config.window_background_opacity = 1.0
-    config.text_background_opacity = 1.0
+   -- 滚动条设置
+   enable_scroll_bar = true,
 
-    -- 若 WebGPU 驱动不稳、拖影卡顿，可退回 OpenGL（按需打开）：
-    -- config.front_end = "OpenGL"
+   -- 标签栏外观
+   enable_tab_bar = true,
+   hide_tab_bar_if_only_one_tab = false,
+   use_fancy_tab_bar = false,
+   tab_max_width = 25,
+   show_tab_index_in_tab_bar = false,
+   switch_to_last_active_tab_when_closing_tab = true,
 
-    -- background img
-    config.window_background_image = "C:/Users/lixinrong/.config/wezterm/share/momiji1.png"
-    config.window_background_image_hsb = {
-        brightness = 0.09, -- 亮度
-        hue = 1.0, -- 色相
-        saturation = 1.9, -- 饱和度
-    }
-end
+   -- 命令面板样式
+   command_palette_fg_color = '#b4befe',
+   command_palette_bg_color = '#11111b',
+   command_palette_font_size = 12,
+   command_palette_rows = 25,
+
+   -- 窗口边距与关闭行为
+   window_padding = {
+      left = 0,
+      right = 0,
+      top = 10,
+      bottom = 0.0,
+   },
+   adjust_window_size_when_changing_font_size = false,
+   window_close_confirmation = 'NeverPrompt',
+   window_frame = {
+      active_titlebar_bg = '#090909',
+      -- font = fonts.font,
+      -- font_size = fonts.font_size,
+   },
+   -- inactive_pane_hsb = {
+   --    saturation = 0.9,
+   --    brightness = 0.65,
+   -- },
+   inactive_pane_hsb = {
+      saturation = 1,
+      brightness = 1,
+   },
+
+   -- 视觉响铃效果
+   visual_bell = {
+      fade_in_function = 'EaseIn',
+      fade_in_duration_ms = 250,
+      fade_out_function = 'EaseOut',
+      fade_out_duration_ms = 250,
+      target = 'CursorColor',
+   },
+}
