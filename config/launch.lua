@@ -13,11 +13,32 @@ if platform.is_win then
       { label = 'PowerShell Core', args = { 'pwsh', '-NoLogo' } },
       { label = 'PowerShell Desktop', args = { 'powershell' } },
       { label = 'Command Prompt', args = { 'cmd' } },
-      { label = 'Nushell', args = { 'nu' } },
-      { label = 'Msys2', args = { 'ucrt64.cmd' } },
+      -- { label = 'Nushell', args = { 'nu' } },
+      {
+         label = 'Msys2',
+         args = {
+            'cmd',
+            '/c',
+            'C:/msys64/msys2_shell.cmd',
+            '-defterm',
+            '-here',
+            '-no-start',
+            '-ucrt64',
+         },
+      },
       {
          label = 'Git Bash',
-         args = { 'C:\\Users\\kevin\\scoop\\apps\\git\\current\\bin\\bash.exe' },
+         args = {
+            'cmd',
+            '/c',
+            'C:\\Program Files (x86)\\Git\\bin\\bash.exe',
+            '--login',
+            '-i',
+         },
+      },
+      {
+         label = 'Ubuntu2',
+         args = { 'C:\\Windows\\System32\\wsl.exe', '--cd', '~', '-d', 'Ubuntu2' },
       },
    }
 elseif platform.is_mac then
