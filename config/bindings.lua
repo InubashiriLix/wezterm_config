@@ -8,11 +8,11 @@ local mod = {}
 -- 统一封装跨平台的组合键前缀
 
 if platform.is_mac then
-   mod.SUPER = 'SUPER'
-   mod.SUPER_REV = 'SUPER|CTRL'
+    mod.SUPER = 'SUPER'
+    mod.SUPER_REV = 'SUPER|CTRL'
 elseif platform.is_win or platform.is_linux then
-   mod.SUPER = 'ALT' -- 避免与 Windows 徽标键快捷键冲突
-   mod.SUPER_REV = 'ALT|CTRL'
+    mod.SUPER = 'ALT' -- 避免与 Windows 徽标键快捷键冲突
+    mod.SUPER_REV = 'ALT|CTRL'
 end
 
 -- stylua: ignore
@@ -86,6 +86,37 @@ local keys = {
 
     -- debug display --
     { key = 'y', mods = mod.SUPER,    action = act.ShowDebugOverlay },
+
+    -- increase / decrase backdrop overlay opacity
+    { key = 'F11', mods = mod.SUPER,    action = 
+        wezterm.action_callback(function(window, _pane)
+            backdrops:mod_overlay_opacity(window, backdrops.overlay_opacity + 0.08)
+            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
+        end)
+    },
+
+    { key = 'F12', mods = mod.SUPER,    action = 
+        wezterm.action_callback(function(window, _pane)
+            backdrops:mod_overlay_opacity(window,backdrops.overlay_opacity - 0.08)
+            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
+        end)
+    },
+
+
+    { key = 'F11', mods = mod.SUPER_REV,    action = 
+        wezterm.action_callback(function(window, _pane)
+            backdrops:mod_overlay_opacity(window, backdrops.overlay_opacity + 0.15)
+            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
+        end)
+    },
+
+    { key = 'F12', mods = mod.SUPER_REV,    action = 
+        wezterm.action_callback(function(window, _pane)
+            backdrops:mod_overlay_opacity(window,backdrops.overlay_opacity - 0.15)
+            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
+        end)
+    },
+
 
 
     -- {key = '+', mods=mod.SUPER, action = act.IncreaseFontSize},
@@ -171,13 +202,15 @@ local keys = {
             end),
         }),
     },
-    -- {
-    --    key = 'b',
-    --    mods = mod.SUPER,
-    --    action = wezterm.action_callback(function(window, _pane)
-    --       backdrops:toggle_focus(window)
-    --    end)
-    -- },
+
+    -- the focus mode
+    {
+       key = 'b',
+       mods = mod.SUPER,
+       action = wezterm.action_callback(function(window, _pane)
+          backdrops:toggle_focus(window)
+       end)
+    },
 
     -- 面板 --
     -- 面板：分割
@@ -259,20 +292,20 @@ local key_tables = {
 }
 
 local mouse_bindings = {
-   -- Ctrl+单击可打开鼠标所在链接
-   {
-      event = { Up = { streak = 1, button = 'Left' } },
-      mods = 'CTRL',
-      action = act.OpenLinkAtMouseCursor,
-   },
+    -- Ctrl+单击可打开鼠标所在链接
+    {
+        event = { Up = { streak = 1, button = 'Left' } },
+        mods = 'CTRL',
+        action = act.OpenLinkAtMouseCursor,
+    },
 }
 
 return {
-   disable_default_key_bindings = true,
-   -- 若需要也可禁用默认鼠标绑定
-   -- disable_default_mouse_bindings = true,
-   leader = { key = 'Space', mods = mod.SUPER_REV },
-   keys = keys,
-   key_tables = key_tables,
-   mouse_bindings = mouse_bindings,
+    disable_default_key_bindings = true,
+    -- 若需要也可禁用默认鼠标绑定
+    -- disable_default_mouse_bindings = true,
+    leader = { key = 'Space', mods = mod.SUPER_REV },
+    keys = keys,
+    key_tables = key_tables,
+    mouse_bindings = mouse_bindings,
 }

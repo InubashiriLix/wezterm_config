@@ -3,8 +3,9 @@ local gpu_adapters = require('utils.gpu-adapter')
 local backdrops = require('utils.backdrops')
 local colors = require('colors.custom')
 
-return {
-   max_fps = 120,
+-- Base appearance configuration
+local appearance = {
+   max_fps = 100,
    front_end = 'WebGpu', ---@type 'WebGpu' | 'OpenGL' | 'Software'
    webgpu_power_preference = 'HighPerformance',
    webgpu_preferred_adapter = gpu_adapters:pick_best(),
@@ -74,3 +75,11 @@ return {
       target = 'CursorColor',
    },
 }
+
+-- Merge frosted glass options from backdrops if enabled
+local frosted_opts = backdrops:get_frosted_glass_opts()
+for k, v in pairs(frosted_opts) do
+   appearance[k] = v
+end
+
+return appearance
