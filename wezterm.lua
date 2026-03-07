@@ -17,11 +17,12 @@ require('events.gui-startup').setup()
 
 -- 依次组合各项子配置，最终返回完整的 WezTerm 配置
 return Config
-   :init()
-   :append(require('config.appearance')) -- 外观相关设置
-   :append(require('config.bindings')) -- 快捷键设置
-   :append(require('config.domains')) -- 域与 SSH 等远程配置
-   :append(require('config.fonts')) -- 字体设置
-   :append(require('config.general')) -- 通用行为设置
-   :append(require('config.launch'))
-   .options -- 启动项配置并返回选项
+    :init()
+    :append(require('config.appearance')) -- 外观相关设置
+    :append(require('config.bindings')) -- 快捷键设置
+    :append(require('config.domains')) -- 域与 SSH 等远程配置
+    :append(require('config.fonts')) -- 字体设置
+    :append(require('config.general')) -- 通用行为设置
+    :append(require('config.launch'))
+    :append(require('config.image')) -- enable the kitty graphics protocol
+    .options -- 启动项配置并返回选项
