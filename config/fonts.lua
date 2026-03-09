@@ -2,7 +2,8 @@
 local wezterm = require('wezterm')
 local platform = require('utils.platform')
 
-local font_family = 'Maple Mono'
+local font_family = 'Maple Mono NF CN'
+-- local font_family = 'Maple Mono Normal NF CN'
 -- local font_family = 'CaskaydiaCove Nerd Font'
 -- local font_family = 'JetBrainsMono Nerd Font'
 -- local font_family = 'CartographCF Nerd Font'
