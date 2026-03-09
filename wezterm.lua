@@ -1,5 +1,6 @@
 -- 引入基础配置模块，组合其他模块的配置
 local Config = require('config')
+local Fonts = require('config.fonts')
 
 -- 初始化并配置桌面背景工具
 require('background_cfg').setup()
@@ -14,6 +15,8 @@ require('events.tab-title').setup({ hide_active_tab_unseen = false, unseen_icon 
 require('events.new-tab-button').setup()
 -- 注册 GUI 启动时执行的初始化逻辑
 require('events.gui-startup').setup()
+-- 注册字体热切换事件
+Fonts:setup()
 
 -- 依次组合各项子配置，最终返回完整的 WezTerm 配置
 return Config
@@ -21,7 +24,7 @@ return Config
     :append(require('config.appearance')) -- 外观相关设置
     :append(require('config.bindings')) -- 快捷键设置
     :append(require('config.domains')) -- 域与 SSH 等远程配置
-    :append(require('config.fonts')) -- 字体设置
+    :append(Fonts:load()) -- 字体设置
     :append(require('config.general')) -- 通用行为设置
     :append(require('config.launch'))
     :append(require('config.image')) -- enable the kitty graphics protocol

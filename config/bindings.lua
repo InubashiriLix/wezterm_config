@@ -25,12 +25,21 @@ local keys = {
         mods = 'NONE',
         action = act.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }),
     },
-    -- { key = 'F4', mods = 'NONE', action = act.ShowLauncherArgs({ flags = 'FUZZY|TABS' }) },
+
+    -- select font family
+    { key = 'F12', mods = 'NONE', action = act.EmitEvent('fonts.select-family') },
+    -- { key = 'F5', mods = 'NONE', action = act.EmitEvent('fonts.cycle-family-next') },
+    -- { key = 'F5', mods = 'SHIFT', action = act.EmitEvent('fonts.cycle-family-prev') },
+    -- { key = 'F6', mods = 'NONE', action = act.EmitEvent('fonts.reset-family') },
+
+    -- Full Screen toggle
     { key = 'F11', mods = 'NONE',    action = act.ToggleFullScreen },
     {key = 'Enter', mods="CTRL", action = act.ToggleFullScreen},
 
+    -- search
     { key = 'f',   mods = mod.SUPER, action = act.Search({ CaseInSensitiveString = '' }) },
 
+    -- website link open
     {
         key = 'u',
         mods = mod.SUPER_REV,
@@ -68,61 +77,6 @@ local keys = {
     { key = 'r',          mods = mod.SUPER, action = act.ShowLauncher  },
 
     { key = 'w',          mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
-
-    -- 标签页：导航
-    { key = '[',          mods = mod.SUPER,     action = act.ActivateTabRelative(-1) },
-    { key = ']',          mods = mod.SUPER,     action = act.ActivateTabRelative(1) },
-    -- { key = '[',          mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
-    -- { key = ']',          mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
-    { key = 'h',          mods = mod.SUPER, action = act.ActivateTabRelative(-1) },
-    { key = 'l',          mods = mod.SUPER, action = act.ActivateTabRelative(1) },
-
-    -- 标签页标题 --
-    { key = '0',          mods = mod.SUPER,     action = act.EmitEvent('tabs.manual-update-tab-title') },
-    { key = '0',          mods = mod.SUPER_REV, action = act.EmitEvent('tabs.reset-tab-title') },
-
-    -- 标签栏显隐 --
-    { key = '9',          mods = mod.SUPER,     action = act.EmitEvent('tabs.toggle-tab-bar'), },
-
-    -- debug display --
-    { key = 'y', mods = mod.SUPER,    action = act.ShowDebugOverlay },
-
-    -- increase / decrase backdrop overlay opacity
-    { key = 'F11', mods = mod.SUPER,    action = 
-        wezterm.action_callback(function(window, _pane)
-            backdrops:mod_overlay_opacity(window, backdrops.overlay_opacity + 0.08)
-            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
-        end)
-    },
-
-    { key = 'F12', mods = mod.SUPER,    action = 
-        wezterm.action_callback(function(window, _pane)
-            backdrops:mod_overlay_opacity(window,backdrops.overlay_opacity - 0.08)
-            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
-        end)
-    },
-
-
-    { key = 'F11', mods = mod.SUPER_REV,    action = 
-        wezterm.action_callback(function(window, _pane)
-            backdrops:mod_overlay_opacity(window, backdrops.overlay_opacity + 0.15)
-            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
-        end)
-    },
-
-    { key = 'F12', mods = mod.SUPER_REV,    action = 
-        wezterm.action_callback(function(window, _pane)
-            backdrops:mod_overlay_opacity(window,backdrops.overlay_opacity - 0.15)
-            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
-        end)
-    },
-
-
-
-    -- {key = '+', mods=mod.SUPER, action = act.IncreaseFontSize},
-    -- {key = '-', mods=mod.SUPER, action = act.IncreaseFontSize},
-
-
 
     -- 窗口操作 --
     -- 窗口：新建窗口
@@ -162,6 +116,60 @@ local keys = {
             window:maximize()
         end)
     },
+
+    -- increaes and decrease font size
+    {key = '+', mods='CTRL|SHIFT', action = act.IncreaseFontSize},
+    {key = '-', mods=mod.SUPER_REV, action = act.DecreaseFontSize},
+
+    -- 标签页：导航
+    { key = '[',          mods = mod.SUPER,     action = act.ActivateTabRelative(-1) },
+    { key = ']',          mods = mod.SUPER,     action = act.ActivateTabRelative(1) },
+    -- { key = '[',          mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
+    -- { key = ']',          mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
+    { key = 'h',          mods = mod.SUPER, action = act.ActivateTabRelative(-1) },
+    { key = 'l',          mods = mod.SUPER, action = act.ActivateTabRelative(1) },
+
+    -- 标签页标题 --
+    { key = '0',          mods = mod.SUPER,     action = act.EmitEvent('tabs.manual-update-tab-title') },
+    { key = '0',          mods = mod.SUPER_REV, action = act.EmitEvent('tabs.reset-tab-title') },
+
+    -- 标签栏显隐 --
+    { key = '9',          mods = mod.SUPER,     action = act.EmitEvent('tabs.toggle-tab-bar'), },
+
+    -- debug display --
+    { key = 'y', mods = mod.SUPER,    action = act.ShowDebugOverlay },
+
+    -- increase / decrase backdrop overlay opacity
+    -- stylua: ignore start
+    { key = 'PageDown', mods = mod.SUPER,    
+        action = wezterm.action_callback(function(window, _pane)
+            backdrops:mod_overlay_opacity(window, backdrops.overlay_opacity + 0.08)
+            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
+        end)
+    },
+
+    { key = 'PageUp', mods = mod.SUPER,    
+        action = wezterm.action_callback(function(window, _pane)
+            backdrops:mod_overlay_opacity(window,backdrops.overlay_opacity - 0.08)
+            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
+        end)
+    },
+
+
+    { key = 'PageDown', mods = mod.SUPER_REV,    
+        action = wezterm.action_callback(function(window, _pane)
+            backdrops:mod_overlay_opacity(window, backdrops.overlay_opacity + 0.15)
+            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
+        end)
+    },
+
+    { key = 'PageUp', mods = mod.SUPER_REV,    
+        action = wezterm.action_callback(function(window, _pane)
+            backdrops:mod_overlay_opacity(window,backdrops.overlay_opacity - 0.15)
+            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
+        end)
+    },
+    -- stylua: ignore end
 
     -- 背景控制 --
     {
