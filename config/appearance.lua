@@ -3,10 +3,14 @@ local gpu_adapters = require('utils.gpu-adapter')
 local backdrops = require('utils.backdrops')
 local colors = require('colors.custom')
 
+-- TODO: feat: dynamic change display driver and fps
+
 -- Base appearance configuration
 local appearance = {
     max_fps = 120,
+    animation_fps = 120,
     front_end = 'WebGpu', ---@type 'WebGpu' | 'OpenGL' | 'Software'
+    -- webgpu_backend = 'Dx12', ---@type 'Vulkan' | 'Dx12' | 'Gl'
     webgpu_power_preference = 'HighPerformance',
     webgpu_preferred_adapter = gpu_adapters:pick_best(),
     -- webgpu_preferred_adapter = gpu_adapters:pick_manual('Dx12', 'IntegratedGpu'),
@@ -14,7 +18,6 @@ local appearance = {
     underline_thickness = '1.5pt',
 
     -- 光标动画相关参数
-    animation_fps = 30,
     cursor_blink_ease_in = 'EaseOut',
     cursor_blink_ease_out = 'EaseOut',
     default_cursor_style = 'BlinkingBlock',
