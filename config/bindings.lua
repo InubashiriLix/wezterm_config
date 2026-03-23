@@ -118,14 +118,13 @@ local keys = {
     },
 
     -- increaes and decrease font size
-    {key = '+', mods='CTRL|SHIFT', action = act.IncreaseFontSize},
+    {key = '+', mods=mod.SUPER_REV, action = act.IncreaseFontSize},
     {key = '-', mods=mod.SUPER_REV, action = act.DecreaseFontSize},
 
-    -- 标签页：导航
-    { key = '[',          mods = mod.SUPER,     action = act.ActivateTabRelative(-1) },
-    { key = ']',          mods = mod.SUPER,     action = act.ActivateTabRelative(1) },
-    -- { key = '[',          mods = mod.SUPER_REV, action = act.MoveTabRelative(-1) },
-    -- { key = ']',          mods = mod.SUPER_REV, action = act.MoveTabRelative(1) },
+    -- tab: move tab pos in tabline
+    { key = '[',          mods = mod.SUPER,     action = act.MoveTabRelative(-1) },
+    { key = ']',          mods = mod.SUPER,     action = act.MoveTabRelative(1) },
+    -- tab: change tab
     { key = 'h',          mods = mod.SUPER, action = act.ActivateTabRelative(-1) },
     { key = 'l',          mods = mod.SUPER, action = act.ActivateTabRelative(1) },
 
@@ -227,6 +226,18 @@ local keys = {
         mods = mod.SUPER,
         action = act.SplitVertical({ domain = 'CurrentPaneDomain' }),
     },
+    -- {
+    --     key = [[\]],
+    --     mods = mod.SUPER,
+    --     action = act.SplitVertical({
+    --         function() 
+    --             act.InputSelector(
+    --                 {title = "InputSelector: Select Split Term", choices = {1: }}
+    --
+    --             )
+    --         end
+    --     })
+    -- },
     {
         key = [[\]],
         mods = mod.SUPER_REV,
