@@ -70,11 +70,11 @@ local keys = {
 
     -- 标签页 --
     -- 标签页：创建与关闭
-    { key = 't',          mods = mod.SUPER,     action = act.SpawnTab('DefaultDomain') },
+    -- WARNING: the alt + ctrl + t has been bind to start wezterm on my windows computer
+    { key = 't',          mods = mod.SUPER,     action = act.ShowLauncher },
     -- Open Ubuntu2 WSL distro in a new tab
     { key = 'i',          mods = mod.SUPER_REV, action = act.SpawnCommandInNewTab({ args = { 'C:\\Windows\\System32\\wsl.exe', '--cd', '~', '-d', 'Ubuntu2' } }) },
-    -- WARNING: the alt + ctrl + t has been bind to start wezterm on my windows computer
-    { key = 'r',          mods = mod.SUPER, action = act.ShowLauncher  },
+    -- { key = 'r',          mods = mod.SUPER, action = act.ShowLauncher  },
 
     { key = 'w',          mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
 
