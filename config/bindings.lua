@@ -4,6 +4,7 @@ local platform = require('utils.platform')
 local act = wezterm.action
 
 local mod = {}
+local fullscreen_action = act.ToggleFullScreen
 -- 统一封装跨平台的组合键前缀
 
 if platform.is_mac then
@@ -12,6 +13,17 @@ if platform.is_mac then
 elseif platform.is_win or platform.is_linux then
     mod.SUPER = 'ALT'
     mod.SUPER_REV = 'ALT|CTRL'
+end
+
+if platform.is_niri then
+    fullscreen_action = wezterm.action_callback(function(window, _pane)
+        wezterm.background_child_process({
+            'niri',
+            'msg',
+            'action',
+            'maximize-window-to-edges',
+        })
+    end)
 end
 
 -- stylua: ignore
@@ -32,8 +44,8 @@ local keys = {
     -- { key = 'F6', mods = 'NONE', action = act.EmitEvent('fonts.reset-family') },
 
     -- Full Screen toggle
-    { key = 'F11', mods = 'NONE',    action = act.ToggleFullScreen },
-    {key = 'Enter', mods="CTRL", action = act.ToggleFullScreen},
+    { key = 'F11', mods = 'NONE', action = fullscreen_action },
+    { key = 'Enter', mods = 'CTRL', action = fullscreen_action },
 
     -- search
     { key = 'f',   mods = mod.SUPER, action = act.Search({ CaseInSensitiveString = '' }) },

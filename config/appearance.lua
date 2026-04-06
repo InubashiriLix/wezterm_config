@@ -48,7 +48,7 @@ local appearance = {
     window_padding = {
         left = 0,
         right = 0,
-        top = 10,
+        top = 0.0,
         bottom = 0.0,
     },
     adjust_window_size_when_changing_font_size = false,
@@ -79,8 +79,8 @@ local appearance = {
 
 if platform.is_niri then
     appearance.enable_scroll_bar = false
-    appearance.hide_tab_bar_if_only_one_tab = true
-    appearance.window_decorations = 'RESIZE'
+    appearance.hide_tab_bar_if_only_one_tab = false
+    appearance.window_decorations = 'NONE'
     appearance.window_padding = {
         left = 0,
         right = 0,
