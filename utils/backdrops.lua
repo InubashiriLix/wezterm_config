@@ -34,7 +34,7 @@ function BackDrops:init()
         focus_color = colors.background,
         focus_opacity = 1,
         overlay_color = colors.background,
-        overlay_opacity = 0.96,
+        overlay_opacity = 0.80,
         focus_on = false,
     }
     local backdrops = setmetatable(inital, self)

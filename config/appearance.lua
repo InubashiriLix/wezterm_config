@@ -1,7 +1,7 @@
 -- 外观相关配置：GPU 适配器、背景与配色方案
 local gpu_adapters = require('utils.gpu-adapter')
-local backdrops = require('utils.backdrops')
 local colors = require('colors.custom')
+local platform = require('utils.platform')
 
 -- TODO: feat: dynamic change display driver and fps
 
@@ -9,10 +9,10 @@ local colors = require('colors.custom')
 local appearance = {
     max_fps = 120,
     animation_fps = 120,
-    front_end = 'WebGpu', ---@type 'WebGpu' | 'OpenGL' | 'Software'
+    front_end = 'OpenGL', ---@type 'WebGpu' | 'OpenGL' | 'Software'
     -- webgpu_backend = 'Dx12', ---@type 'Vulkan' | 'Dx12' | 'Gl'
     webgpu_power_preference = 'HighPerformance',
-    webgpu_preferred_adapter = gpu_adapters:pick_best(),
+    -- webgpu_preferred_adapter = gpu_adapters:pick_best(),
     -- webgpu_preferred_adapter = gpu_adapters:pick_manual('Dx12', 'IntegratedGpu'),
     -- webgpu_preferred_adapter = gpu_adapters:pick_manual('Gl', 'Other'),
     underline_thickness = '1.5pt',
@@ -25,9 +25,7 @@ local appearance = {
 
     -- 颜色主题配置
     colors = colors,
-
-    -- 背景图：传入 true 可在启动时启用专注模式（关闭背景图）
-    background = backdrops:initial_options(false), -- 默认叠加半透明黑色遮罩
+    window_background_opacity = 0.84,
 
     -- 滚动条设置
     enable_scroll_bar = true,
@@ -79,10 +77,16 @@ local appearance = {
     },
 }
 
--- Merge frosted glass options from backdrops if enabled
-local frosted_opts = backdrops:get_frosted_glass_opts()
-for k, v in pairs(frosted_opts) do
-    appearance[k] = v
+if platform.is_niri then
+    appearance.enable_scroll_bar = false
+    appearance.hide_tab_bar_if_only_one_tab = true
+    appearance.window_decorations = 'RESIZE'
+    appearance.window_padding = {
+        left = 0,
+        right = 0,
+        top = 0,
+        bottom = 0,
+    }
 end
 
 return appearance

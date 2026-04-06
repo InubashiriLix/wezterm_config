@@ -15,11 +15,11 @@ local platform = require('utils.platform')
 local M = {}
 
 M.font_family_options = {
-    'Maple Mono NF CN',
-    'Maple Mono Normal NF CN',
-    'CaskaydiaCove Nerd Font',
+    -- 'Maple Mono NF CN',
+    -- 'Maple Mono Normal NF CN',
+    -- 'CaskaydiaCove Nerd Font',
     'JetBrainsMono Nerd Font',
-    'CartographCF Nerd Font',
+    -- 'CartographCF Nerd Font',
 }
 
 M.wezterm_font = {
@@ -27,7 +27,7 @@ M.wezterm_font = {
     weight = 'Medium',
 }
 
-M.font_size = platform.is_mac and 12 or 12
+M.font_size = platform.is_mac and 12 or 13
 M.freetype_load_target = 'Normal' ---@type 'Normal'|'Light'|'Mono'|'HorizontalLcd'
 M.freetype_render_target = 'Normal' ---@type 'Normal'|'Light'|'Mono'|'HorizontalLcd'
 

@@ -52,10 +52,10 @@ elseif platform.is_mac then
     }
 elseif platform.is_linux then
     -- Linux 保持常见 shell 选项
-    options.default_prog = { 'bash', '-l' }
+    options.default_prog = { 'fish', '-l' }
     options.launch_menu = {
+        { label = 'Fish', args = { 'fish', '-l' } },
         { label = 'Bash', args = { 'bash', '-l' } },
-        { label = 'Zsh', args = { 'zsh', '-l' } },
     }
 end
 

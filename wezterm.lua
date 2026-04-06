@@ -2,9 +2,6 @@
 local Config = require('config')
 local Fonts = require('config.fonts')
 
--- 初始化并配置桌面背景工具
-require('background_cfg').setup()
-
 -- 注册左侧状态栏信息
 require('events.left-status').setup()
 -- 注册右侧状态栏信息，设置日期时间格式

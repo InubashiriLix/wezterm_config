@@ -1,7 +1,6 @@
 -- 键盘与鼠标快捷键配置集中于此
 local wezterm = require('wezterm')
 local platform = require('utils.platform')
-local backdrops = require('utils.backdrops')
 local act = wezterm.action
 
 local mod = {}
@@ -11,7 +10,7 @@ if platform.is_mac then
     mod.SUPER = 'SUPER'
     mod.SUPER_REV = 'SUPER|CTRL'
 elseif platform.is_win or platform.is_linux then
-    mod.SUPER = 'ALT' -- 避免与 Windows 徽标键快捷键冲突
+    mod.SUPER = 'ALT'
     mod.SUPER_REV = 'ALT|CTRL'
 end
 
@@ -70,11 +69,8 @@ local keys = {
 
     -- 标签页 --
     -- 标签页：创建与关闭
-    -- WARNING: the alt + ctrl + t has been bind to start wezterm on my windows computer
-    { key = 't',          mods = mod.SUPER,     action = act.ShowLauncher },
-    -- Open Ubuntu2 WSL distro in a new tab
-    { key = 'i',          mods = mod.SUPER_REV, action = act.SpawnCommandInNewTab({ args = { 'C:\\Windows\\System32\\wsl.exe', '--cd', '~', '-d', 'Ubuntu2' } }) },
-    -- { key = 'r',          mods = mod.SUPER, action = act.ShowLauncher  },
+    { key = 't',          mods = mod.SUPER,     action = act.SpawnTab('CurrentPaneDomain') },
+    { key = 'r',          mods = mod.SUPER, action = act.ShowLauncher  },
 
     { key = 'w',          mods = mod.SUPER_REV, action = act.CloseCurrentTab({ confirm = false }) },
 
@@ -137,87 +133,6 @@ local keys = {
 
     -- debug display --
     { key = 'y', mods = mod.SUPER,    action = act.ShowDebugOverlay },
-
-    -- increase / decrase backdrop overlay opacity
-    -- stylua: ignore start
-    { key = 'PageDown', mods = mod.SUPER,    
-        action = wezterm.action_callback(function(window, _pane)
-            backdrops:mod_overlay_opacity(window, backdrops.overlay_opacity + 0.08)
-            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
-        end)
-    },
-
-    { key = 'PageUp', mods = mod.SUPER,    
-        action = wezterm.action_callback(function(window, _pane)
-            backdrops:mod_overlay_opacity(window,backdrops.overlay_opacity - 0.08)
-            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
-        end)
-    },
-
-
-    { key = 'PageDown', mods = mod.SUPER_REV,    
-        action = wezterm.action_callback(function(window, _pane)
-            backdrops:mod_overlay_opacity(window, backdrops.overlay_opacity + 0.15)
-            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
-        end)
-    },
-
-    { key = 'PageUp', mods = mod.SUPER_REV,    
-        action = wezterm.action_callback(function(window, _pane)
-            backdrops:mod_overlay_opacity(window,backdrops.overlay_opacity - 0.15)
-            window.toast_notification("Background Opacity: " .. backdrops.overlay_opacity, "", nil, 1000)
-        end)
-    },
-    -- stylua: ignore end
-
-    -- 背景控制 --
-    {
-        key = [[/]],
-        mods = mod.SUPER,
-        action = wezterm.action_callback(function(window, _pane)
-            backdrops:random(window)
-        end),
-    },
-    {
-        key = [[,]],
-        mods = mod.SUPER,
-        action = wezterm.action_callback(function(window, _pane)
-            backdrops:cycle_back(window)
-        end),
-    },
-    {
-        key = [[.]],
-        mods = mod.SUPER,
-        action = wezterm.action_callback(function(window, _pane)
-            backdrops:cycle_forward(window)
-        end),
-    },
-    {
-        key = [[/]],
-        mods = mod.SUPER_REV,
-        action = act.InputSelector({
-            title = 'InputSelector: Select Background',
-            choices = backdrops:choices(),
-            fuzzy = true,
-            fuzzy_description = 'Select Background: ',
-            action = wezterm.action_callback(function(window, _pane, idx)
-                if not idx then
-                    return
-                end
-                ---@diagnostic disable-next-line: param-type-mismatch
-                backdrops:set_img(window, tonumber(idx))
-            end),
-        }),
-    },
-
-    -- the focus mode
-    {
-       key = 'b',
-       mods = mod.SUPER,
-       action = wezterm.action_callback(function(window, _pane)
-          backdrops:toggle_focus(window)
-       end)
-    },
 
     -- 面板 --
     -- 面板：分割
